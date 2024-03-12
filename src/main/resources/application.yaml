@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: transaction-master
+  jpa:
+    properties:
+      hibernate:
+        database-platform: org.hibernate.dialect.H2Dialect
+        format_sql: true
+    hibernate:
+      ddl-auto: validate
+    show-sql: true

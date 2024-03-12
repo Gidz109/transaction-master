@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:transactionmaster
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  flyway:
+    enabled: true
+    user: sa
+    password: password
+    locations: classpath:db/migration/all, classpath:db/migration/dev
+    schemas: mmtm
