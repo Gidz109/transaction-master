@@ -1,4 +1,10 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:8010/default/jwks"
+          issuer-uri: "http://localhost:8010/default"
   datasource:
     url: jdbc:postgresql://localhost:5432/transactionmaster?currentSchema=tmsch
     username: postgres
@@ -9,3 +15,7 @@ spring:
     password: P@ssw0rd1
     locations: classpath:db/migration/all, classpath:db/migration/dev
     schemas: tmsch
+
+logging:
+  level:
+    root: info
