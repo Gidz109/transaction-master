@@ -1,0 +1,2 @@
+insert into transactionmaster.tmsch."user"(name, surname, username) values ('John', 'Doe', 'jd@gmail.com');
+insert into transactionmaster.tmsch.authentication(password, retry_count, locked, user_id) values ('cGFzc3dvcmQ=', 0, false, 1);
