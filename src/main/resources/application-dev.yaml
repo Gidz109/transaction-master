@@ -1,12 +1,11 @@
 spring:
   datasource:
-    url: jdbc:h2:mem:transactionmaster
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/transactionmaster?currentSchema=tmsch
+    username: postgres
+    password: P@ssw0rd1
   flyway:
     enabled: true
-    user: sa
-    password: password
+    user: postgres
+    password: P@ssw0rd1
     locations: classpath:db/migration/all, classpath:db/migration/dev
-    schemas: mmtm
+    schemas: tmsch

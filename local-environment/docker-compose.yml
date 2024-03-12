@@ -1,0 +1,31 @@
+version: '3.6'
+
+volumes:
+  pgdata:
+
+services:
+  mock-auth-server:
+    container_name: "mock-auth-server"
+    image: ghcr.io/navikt/mock-oauth2-server:0.3.3
+    restart: always
+    environment:
+      - SERVER_PORT=${JWT_MOCK_SERVER_PORT}
+      - JSON_CONFIG={"interactiveLogin":false,"httpServer":"NettyWrapper","tokenCallbacks":[{"issuerId":"default","tokenExpiry":999999,"requestMappings":[{"requestParam":"scope","match":"paymentsdomain.all","claims":{"scp":["customerdomain.arrangements.get","paymentsdomain.posting.post","paymentsdomain.clearing.post","paymentsdomain.businessday.post","paymentsdomain.initiation.post","paymentsdomain.initiation.get","paymentsdomain.transformer.post"],"strongauthlogin":"false"}}]}]}
+    ports:
+      - "8010:8010"
+  postgres:
+    container_name: "transaction-master-local-db"
+    image: "postgres:16"
+    restart: always
+    environment:
+      - POSTGRES_USER=${DB_ADMIN_USER}
+      - POSTGRES_PASSWORD=${DB_ADMIN_PASSWORD}
+      - POSTGRES_MULTIPLE_DATABASES=${DB_MULTIPLE}
+      - POSTGRES_ADD_SCHEMAS=${DB_SCHEMAS}
+      - POSTGRES_DATABASE_USER=${DB_USER}
+      - POSTGRES_DATABASE_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./pg-init-scripts:/docker-entrypoint-initdb.d
