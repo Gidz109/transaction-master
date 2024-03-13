@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository
 import za.co.shoprite.moneymarket.transactionmaster.model.entity.SessionEntity
 
 @Repository
-interface SessionRepository : JpaRepository<SessionEntity, Long> {
-}
+interface SessionRepository : JpaRepository<SessionEntity, Long>

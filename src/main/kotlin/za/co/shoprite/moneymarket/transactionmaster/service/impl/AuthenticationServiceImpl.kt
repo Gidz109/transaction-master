@@ -26,17 +26,17 @@ class AuthenticationServiceImpl: AuthenticationService {
     override fun authenticate(username: String, password: String): String {
 
         val authenticationEntity = authenticationRepository.findByUsername(username)
-        var token = "";
+        var token = ""
         if(!authenticationEntity.locked)    {
             try {
-                token = issueToken(username, password);
+                token = issueToken(username, password)
             } catch (bce: BadCredentialsException) {
                 authenticationEntity.retryCount++
                 if (authenticationEntity.retryCount >= 2)   {
                     authenticationEntity.locked = true
                 }
                 authenticationRepository.save(authenticationEntity)
-                throw bce;
+                throw bce
             }
         }
 
@@ -56,12 +56,12 @@ class AuthenticationServiceImpl: AuthenticationService {
 
         if (response.statusCode != HttpStatus.OK) {
             throw BadCredentialsException("Unable to authenticate user")
-        };
+        }
         return response.body?.access_token ?: ""
     }
 
     fun buildAuthenticationRequest(username: String, password: String): MultiValueMap<String, String>    {
-        val requestBody: MultiValueMap<String, String> = LinkedMultiValueMap();
+        val requestBody: MultiValueMap<String, String> = LinkedMultiValueMap()
         requestBody.add("username", username)
         requestBody.add("grant_type", "password")
         requestBody.add("password", password)

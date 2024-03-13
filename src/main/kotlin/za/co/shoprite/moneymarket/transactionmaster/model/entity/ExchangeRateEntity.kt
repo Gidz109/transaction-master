@@ -5,7 +5,6 @@ import lombok.Getter
 import lombok.RequiredArgsConstructor
 import lombok.Setter
 import java.math.BigDecimal
-import java.util.UUID
 
 @Entity
 @Getter

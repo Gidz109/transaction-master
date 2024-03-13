@@ -30,7 +30,7 @@ class TransactionServiceImpl: TransactionService {
 
     override fun processTransaction(transactionInformation: TransactionInformation)    {
 
-        var transactionEntity = TransactionEntity()
+        val transactionEntity = TransactionEntity()
         val transactionCurrency = currencyRepository.findByCode(transactionInformation.currencyCode)
 
         transactionEntity.userId = transactionInformation.requestingUserId
@@ -38,15 +38,15 @@ class TransactionServiceImpl: TransactionService {
         transactionEntity.currencyId = transactionCurrency.id
         transactionEntity.controlSum = transactionInformation.controlSum
 
-        var creditAmount: BigDecimal = transactionInformation.controlSum
-        var exchangedAmount = calculateExchange(transactionCurrency.id!!, creditAmount)
+        val creditAmount: BigDecimal = transactionInformation.controlSum
+        val exchangedAmount = calculateExchange(transactionCurrency.id!!, creditAmount)
 
-        var creditAccount: AccountEntity = accountRepository.findById(transactionInformation.creditAccountId).get()
+        val creditAccount: AccountEntity = accountRepository.findById(transactionInformation.creditAccountId).get()
         transactionEntity.creditAccountId = creditAccount.id
-        creditAccount(creditAccount, exchangedAmount);
+        creditAccount(creditAccount, exchangedAmount)
 
         if(transactionInformation.transactionType == TransactionType.TRANSFER)  {
-            var debitAccount: AccountEntity = accountRepository.findById(transactionInformation.debitAccountId!!).get()
+            val debitAccount: AccountEntity = accountRepository.findById(transactionInformation.debitAccountId!!).get()
             transactionEntity.debitAccountId = debitAccount.id
             debitAccount(debitAccount, exchangedAmount)
         }
