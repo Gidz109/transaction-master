@@ -8,20 +8,14 @@ import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
-import za.co.shoprite.moneymarket.transactionmaster.model.entity.AuthenticationEntity
 import za.co.shoprite.moneymarket.transactionmaster.model.entity.SessionEntity
 import za.co.shoprite.moneymarket.transactionmaster.repository.AuthenticationRepository
 import za.co.shoprite.moneymarket.transactionmaster.repository.SessionRepository
-import za.co.shoprite.moneymarket.transactionmaster.repository.UserRepository
 import za.co.shoprite.moneymarket.transactionmaster.service.AuthenticationService
 import java.time.LocalDateTime
-import org.apache.commons.codec.binary.Base64 as ApacheBase64
 
 @Service
 class AuthenticationServiceImpl: AuthenticationService {
-
-    @Autowired
-    lateinit var userRepository: UserRepository
 
     @Autowired
     lateinit var authenticationRepository: AuthenticationRepository
@@ -31,18 +25,19 @@ class AuthenticationServiceImpl: AuthenticationService {
 
     override fun authenticate(username: String, password: String): String {
 
-        val userEntity = userRepository.findByUsername(username)
-        val authenticationEntity = authenticationRepository.findByUserId(userEntity.id)
-
-        val base64: ApacheBase64 = ApacheBase64()
-
-        if(!String(base64.decode(authenticationEntity.password)).equals(password) || authenticationEntity.locked)    {
-            if(authenticationEntity.retryCount >= 2)    {
-                authenticationEntity.locked = true
+        val authenticationEntity = authenticationRepository.findByUsername(username)
+        var token = "";
+        if(!authenticationEntity.locked)    {
+            try {
+                token = issueToken(username, password);
+            } catch (bce: BadCredentialsException) {
+                authenticationEntity.retryCount++
+                if (authenticationEntity.retryCount >= 2)   {
+                    authenticationEntity.locked = true
+                }
+                authenticationRepository.save(authenticationEntity)
+                throw bce;
             }
-            authenticationEntity.retryCount++
-            authenticationRepository.save(authenticationEntity)
-            throw BadCredentialsException("Unable to authenticate user")
         }
 
         val session = SessionEntity()
@@ -50,14 +45,14 @@ class AuthenticationServiceImpl: AuthenticationService {
         session.authenticationId = authenticationEntity.id
         sessionRepository.save(session)
 
-        return issueToken()
+        return token
 
     }
 
-    fun issueToken(): String    {
-        val url = "http://localhost:8010/default/token"
+    fun issueToken(username: String, password: String): String    {
+        val url = "http://localhost:8080/realms/payments-realm/protocol/openid-connect/token"
 
-        val response = RestTemplate().postForEntity(url, buildAuthenticationRequest(), Response::class.java)
+        val response = RestTemplate().postForEntity(url, buildAuthenticationRequest(username, password), Response::class.java)
 
         if (response.statusCode != HttpStatus.OK) {
             throw BadCredentialsException("Unable to authenticate user")
@@ -65,14 +60,14 @@ class AuthenticationServiceImpl: AuthenticationService {
         return response.body?.access_token ?: ""
     }
 
-    fun buildAuthenticationRequest(): MultiValueMap<String, String>    {
+    fun buildAuthenticationRequest(username: String, password: String): MultiValueMap<String, String>    {
         val requestBody: MultiValueMap<String, String> = LinkedMultiValueMap();
-        requestBody.add("scope", "paymentsdomain.all")
-        requestBody.add("grant_type", "authorization_code")
-        requestBody.add("code", "O4gqy650H6JI42RxB0Gf1sVi_vpPd4TN0ZMH2Ipn_RA")
-        requestBody.add("client_id", "123456")
+        requestBody.add("username", username)
+        requestBody.add("grant_type", "password")
+        requestBody.add("password", password)
+        requestBody.add("client_id", "transaction-master")
         return requestBody
     }
 }
 
-data class Response(val token_type: String, val id_token: String, val access_token: String, val refresh_token: String, val expires_in: Int)
+data class Response(val token_type: String, val access_token: String, val refresh_token: String, val expires_in: Int)

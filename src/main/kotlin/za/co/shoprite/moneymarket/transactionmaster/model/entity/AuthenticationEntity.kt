@@ -13,18 +13,13 @@ import org.apache.commons.codec.binary.Base64
 @Table(name = "authentication", schema = "tmsch", catalog = "transactionmaster")
 open class AuthenticationEntity() {
 
-    @PrePersist
-    fun encodePassword()    {
-        this.password = Base64.encodeBase64String(password.toByteArray())
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, insertable = false, updatable = false)
     open var id: Long? = null
 
-    @Column(name = "password", nullable = false)
-    open var password: String = ""
+    @Column(name = "username", nullable = false)
+    open var username: String = ""
 
     @Column(name = "retry_count", nullable = false)
     open var retryCount: Short = 0

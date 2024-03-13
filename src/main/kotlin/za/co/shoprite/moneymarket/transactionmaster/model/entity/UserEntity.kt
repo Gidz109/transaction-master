@@ -23,8 +23,5 @@ open class UserEntity {
     @Column(name = "surname", nullable = false)
     open var surname: String? = null
 
-    @Column(name = "username", nullable = false)
-    open var username: String? = null
-
 }
 
