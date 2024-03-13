@@ -8,6 +8,6 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
 server:
   port: 8081
