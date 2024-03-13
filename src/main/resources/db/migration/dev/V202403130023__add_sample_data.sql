@@ -2,3 +2,11 @@ insert into transactionmaster.tmsch."user"(name, surname) values ('John', 'Doe')
 insert into transactionmaster.tmsch."user"(name, surname) values ('Jane', 'Doe');
 insert into transactionmaster.tmsch.authentication(username, retry_count, locked, user_id) values ('johndoe', 0, false, 1);
 insert into transactionmaster.tmsch.authentication(username, retry_count, locked, user_id) values ('janedoe', 0, false, 2);
+insert into transactionmaster.tmsch.currency(name, code) values ('Rand', 'ZAR');
+insert into transactionmaster.tmsch.currency(name, code) values ('Dollar', 'USD');
+insert into transactionmaster.tmsch.exchange_rate(currency_id, exchange_rate) values (1, 1);
+insert into transactionmaster.tmsch.exchange_rate(currency_id, exchange_rate) values (2, 18.55);
+insert into transactionmaster.tmsch.account(balance, currency_id, account_number, user_id) values (100000, 1, '6c0bcf71-818f-4187-b1af-ee84cbb49364', 1);
+insert into transactionmaster.tmsch.account(balance, currency_id, account_number, user_id) values (100000, 1, '04fafa83-7882-48c1-906d-61fd33a3bdfe', 2);
+insert into transactionmaster.tmsch.transaction_type(name, code) values ('TRANSFER', 'TRANSFER');
+insert into transactionmaster.tmsch.transaction_type(name, code) values ('DEPOSIT', 'DEPOSIT');
