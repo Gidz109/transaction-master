@@ -6,5 +6,4 @@ import za.co.shoprite.moneymarket.transactionmaster.model.entity.UserEntity
 
 @Repository
 interface UserRepository : JpaRepository<UserEntity, Long> {
-    fun findByUsername(username: String) : UserEntity
 }

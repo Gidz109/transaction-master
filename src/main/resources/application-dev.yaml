@@ -3,8 +3,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: "http://localhost:8010/default/jwks"
-          issuer-uri: "http://localhost:8010/default"
+          jwk-set-uri: "http://localhost:8080/realms/payments-realm/protocol/openid-connect/certs"
+          issuer-uri: "http://localhost:8080/realms/payments-realm"
   datasource:
     url: jdbc:postgresql://localhost:5432/transactionmaster?currentSchema=tmsch
     username: postgres

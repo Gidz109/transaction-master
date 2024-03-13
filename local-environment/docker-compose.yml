@@ -4,6 +4,19 @@ volumes:
   pgdata:
 
 services:
+  keycloak:
+    container_name: "Keycloak"
+    image: quay.io/keycloak/keycloak
+    ports:
+      - "8080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - start-dev
+      - --import-realm
+    volumes:
+      - ./auth/config/realm.json:/opt/keycloak/data/import/realm.json
   mock-auth-server:
     container_name: "mock-auth-server"
     image: ghcr.io/navikt/mock-oauth2-server:2.1.2
