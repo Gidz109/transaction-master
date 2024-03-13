@@ -11,7 +11,7 @@ import java.time.LocalDateTime
 @Setter
 @RequiredArgsConstructor
 @Table(name = "session", schema = "tmsch", catalog = "transactionmaster")
-open class SessionEntity() {
+open class SessionEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

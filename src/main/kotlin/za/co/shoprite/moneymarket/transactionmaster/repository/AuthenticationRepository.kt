@@ -6,6 +6,5 @@ import za.co.shoprite.moneymarket.transactionmaster.model.entity.AuthenticationE
 
 @Repository
 interface AuthenticationRepository : JpaRepository<AuthenticationEntity, Long> {
-    fun findByUserId(userId: Long?): AuthenticationEntity
     fun findByUsername(username: String): AuthenticationEntity
 }

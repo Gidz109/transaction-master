@@ -4,14 +4,13 @@ import jakarta.persistence.*
 import lombok.Getter
 import lombok.Setter
 import lombok.ToString
-import org.apache.commons.codec.binary.Base64
 
 @Entity
 @Getter
 @Setter
 @ToString
 @Table(name = "authentication", schema = "tmsch", catalog = "transactionmaster")
-open class AuthenticationEntity() {
+open class AuthenticationEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

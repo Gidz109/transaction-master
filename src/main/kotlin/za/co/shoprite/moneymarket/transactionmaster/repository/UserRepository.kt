@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository
 import za.co.shoprite.moneymarket.transactionmaster.model.entity.UserEntity
 
 @Repository
-interface UserRepository : JpaRepository<UserEntity, Long> {
-}
+interface UserRepository : JpaRepository<UserEntity, Long>
