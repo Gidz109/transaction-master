@@ -109,3 +109,18 @@ alter table tmsch.authentication
 
 alter table tmsch."user"
     drop column username;
+
+alter table tmsch.transaction
+    rename column debit_account to debit_account_id;
+
+alter table tmsch.transaction
+    rename column credit_account to credit_account_id;
+
+alter table tmsch.transaction
+    alter column debit_account_id drop not null;
+
+alter table tmsch.account
+    alter column user_id type bigint using user_id::bigint;
+
+alter table tmsch.transaction
+    alter column session_id drop not null;
