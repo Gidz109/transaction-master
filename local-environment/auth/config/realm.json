@@ -2237,7 +2237,7 @@
           "temporary":false
         }
       ],
-      "realmRoles": ["report"]
+      "realmRoles": ["report, deposit"]
     },
     {
       "username": "johndoe",

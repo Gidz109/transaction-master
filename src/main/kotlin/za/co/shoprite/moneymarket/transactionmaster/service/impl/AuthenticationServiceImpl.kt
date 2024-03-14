@@ -2,6 +2,7 @@ package za.co.shoprite.moneymarket.transactionmaster.service.impl
 
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.stereotype.Service
@@ -22,6 +23,9 @@ class AuthenticationServiceImpl: AuthenticationService {
 
     @Autowired
     lateinit var sessionRepository: SessionRepository
+
+    @Value("\${application.properties.keycloak.token.url}")
+    lateinit var keycloakTokenUrl: String
 
     override fun authenticate(username: String, password: String): String {
 
@@ -50,9 +54,8 @@ class AuthenticationServiceImpl: AuthenticationService {
     }
 
     fun issueToken(username: String, password: String): String    {
-        val url = "http://localhost:8080/realms/payments-realm/protocol/openid-connect/token"
 
-        val response = RestTemplate().postForEntity(url, buildAuthenticationRequest(username, password), Response::class.java)
+        val response = RestTemplate().postForEntity(keycloakTokenUrl, buildAuthenticationRequest(username, password), Response::class.java)
 
         if (response.statusCode != HttpStatus.OK) {
             throw BadCredentialsException("Unable to authenticate user")
