@@ -2,6 +2,7 @@ package za.co.shoprite.moneymarket.transactionmaster.service.impl
 
 import org.apache.coyote.BadRequestException
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import za.co.shoprite.moneymarket.transactionmaster.dto.TransactionRequestDto
 import za.co.shoprite.moneymarket.transactionmaster.model.TransactionInformation

@@ -19,3 +19,9 @@ spring:
 logging:
   level:
     root: info
+
+application:
+  properties:
+    keycloak:
+      token:
+        url: "http://localhost:8080/realms/payments-realm/protocol/openid-connect/token"

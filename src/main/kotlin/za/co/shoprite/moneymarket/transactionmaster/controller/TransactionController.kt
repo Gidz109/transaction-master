@@ -50,8 +50,9 @@ class TransactionController {
         return ResponseEntity.ok(transactionService.processTransaction(transactionInformation))
     }
 
+    /*This request should actually drop a message on a queue for an MDB to pick up and process on a seperate thread or by using spring batch.*/
     @GetMapping("/transaction/master/report")
-    @PreAuthorize("hasRole('transfer')")
+    @PreAuthorize("hasRole('report')")
     fun report(@AuthenticationPrincipal principal: Jwt): ResponseEntity<TransactionReportInformation> {
         val tranactionReportInformation = transactionService.retrieveUserTransactions(principal.getClaimAsString("preferred_username"))
         reportService.generateTransactionReport(tranactionReportInformation)
