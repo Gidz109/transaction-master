@@ -124,3 +124,6 @@ alter table tmsch.account
 
 alter table tmsch.transaction
     alter column session_id drop not null;
+
+alter table tmsch.transaction
+    add timestamp timestamp without time zone;

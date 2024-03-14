@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository
 import za.co.shoprite.moneymarket.transactionmaster.model.entity.TransactionEntity
 
 @Repository
-interface TransactionRepository : JpaRepository<TransactionEntity, Long>
+interface TransactionRepository : JpaRepository<TransactionEntity, Long>    {
+    fun findAllByUserId(userId: Long): List<TransactionEntity>
+}

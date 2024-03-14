@@ -5,6 +5,7 @@ import lombok.Getter
 import lombok.RequiredArgsConstructor
 import lombok.Setter
 import java.math.BigDecimal
+import java.time.LocalDateTime
 
 @Entity
 @Getter
@@ -35,6 +36,9 @@ open class TransactionEntity {
 
     @Column(name = "currency_id", nullable = false)
     open var currencyId: Short? = null
+
+    @Column(name = "timestamp", nullable = false)
+    open var timestamp: LocalDateTime = LocalDateTime.now()
 
     @Column(name = "session_id", nullable = false)
     open var sessionId: Long? = null
