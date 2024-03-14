@@ -3,15 +3,22 @@ package za.co.shoprite.moneymarket.transactionmaster.service.impl
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import za.co.shoprite.moneymarket.transactionmaster.model.TransactionInformation
+import za.co.shoprite.moneymarket.transactionmaster.model.TransactionReportInformation
+import za.co.shoprite.moneymarket.transactionmaster.model.TransactionSummary
 import za.co.shoprite.moneymarket.transactionmaster.model.entity.AccountEntity
 import za.co.shoprite.moneymarket.transactionmaster.model.entity.TransactionEntity
 import za.co.shoprite.moneymarket.transactionmaster.model.enum.TransactionType
 import za.co.shoprite.moneymarket.transactionmaster.repository.*
 import za.co.shoprite.moneymarket.transactionmaster.service.TransactionService
 import java.math.BigDecimal
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Service
 class TransactionServiceImpl: TransactionService {
+
+    @Autowired
+    lateinit var userRepository: UserRepository
 
     @Autowired
     lateinit var transactionRepository: TransactionRepository
@@ -27,6 +34,9 @@ class TransactionServiceImpl: TransactionService {
 
     @Autowired
     lateinit var exchangeRateRepository: ExchangeRateRepository
+
+    @Autowired
+    lateinit var  authenticationRepository: AuthenticationRepository
 
     override fun processTransaction(transactionInformation: TransactionInformation)    {
 
@@ -53,6 +63,25 @@ class TransactionServiceImpl: TransactionService {
 
         transactionRepository.save(transactionEntity)
 
+    }
+
+    override fun retrieveUserTransactions(username: String): TransactionReportInformation {
+        val userId: Long = authenticationRepository.findByUsername(username).userId!!
+        val transactions: List<TransactionEntity> = transactionRepository.findAllByUserId(userId)
+
+
+        val transactionSummaryList = ArrayList<TransactionSummary>()
+        val name: String = userRepository.findById(userId).get().name!!
+        transactions.forEach{
+            val currencyCode: String = currencyRepository.findById(it.currencyId!!).get().code!!
+            val transactionType: String = transactionTypeRepository.findById(it.transactionTypeId!!).get().code!!
+            val creditAccountNumber: UUID = accountRepository.findById(it.creditAccountId!!).get().accountNumber!!
+            val transactionSummary = TransactionSummary(it.timestamp,
+                it.controlSum!!, currencyCode, transactionType, creditAccountNumber)
+            transactionSummaryList.add(transactionSummary)
+        }
+
+        return TransactionReportInformation(name, transactionSummaryList)
     }
 
     fun creditAccount(accountEntity: AccountEntity, amount: BigDecimal) {
