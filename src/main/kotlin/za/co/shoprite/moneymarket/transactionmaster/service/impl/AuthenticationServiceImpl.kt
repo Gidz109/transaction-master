@@ -1,6 +1,8 @@
 package za.co.shoprite.moneymarket.transactionmaster.service.impl
 
 
+import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.HttpStatus
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
 import org.springframework.web.client.RestTemplate
+import za.co.shoprite.moneymarket.transactionmaster.controller.AuthenticationController
 import za.co.shoprite.moneymarket.transactionmaster.model.entity.SessionEntity
 import za.co.shoprite.moneymarket.transactionmaster.repository.AuthenticationRepository
 import za.co.shoprite.moneymarket.transactionmaster.repository.SessionRepository
@@ -27,6 +30,8 @@ class AuthenticationServiceImpl: AuthenticationService {
     @Value("\${application.properties.keycloak.token.url}")
     lateinit var keycloakTokenUrl: String
 
+    private val logger = LoggerFactory.getLogger(AuthenticationService::class.java)
+
     override fun authenticate(username: String, password: String): String {
 
         val authenticationEntity = authenticationRepository.findByUsername(username)
@@ -35,6 +40,7 @@ class AuthenticationServiceImpl: AuthenticationService {
             try {
                 token = issueToken(username, password)
             } catch (bce: BadCredentialsException) {
+                logger.error("RequestID - ${MDC.get("requestId")} | request to authenticate failed.", bce)
                 authenticationEntity.retryCount++
                 if (authenticationEntity.retryCount >= 2)   {
                     authenticationEntity.locked = true
@@ -43,6 +49,8 @@ class AuthenticationServiceImpl: AuthenticationService {
                 throw bce
             }
         }
+
+        logger.info("RequestID - ${MDC.get("requestId")} | request to authenticate was successful.")
 
         val session = SessionEntity()
         session.timestamp = LocalDateTime.now()

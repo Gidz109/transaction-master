@@ -1,6 +1,8 @@
 package za.co.shoprite.moneymarket.transactionmaster.controller
 
 import io.micrometer.observation.annotation.Observed
+import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -14,6 +16,7 @@ import za.co.shoprite.moneymarket.transactionmaster.model.enum.TransactionType
 import za.co.shoprite.moneymarket.transactionmaster.service.ReportService
 import za.co.shoprite.moneymarket.transactionmaster.service.TransactionService
 import za.co.shoprite.moneymarket.transactionmaster.service.ValidationService
+import java.util.*
 
 @RestController
 class TransactionController {
@@ -27,29 +30,39 @@ class TransactionController {
     @Autowired
     lateinit var reportService: ReportService
 
+    private val logger = LoggerFactory.getLogger(TransactionController::class.java)
+
     @Observed
     @PostMapping("/transaction/master/deposit")
     @PreAuthorize("hasRole('deposit')")
     fun deposit(@RequestBody transactionRequestDto: TransactionRequestDto, @AuthenticationPrincipal principal: Jwt): ResponseEntity<Unit> {
-
-
+        val requestId = UUID.randomUUID().toString()
+        MDC.put("requestId", requestId)
+        logger.info("RequestID - $requestId | Received request to deposit funds for user ${principal.getClaimAsString("preferred_username")}")
         val transactionInformation: TransactionInformation =
             validationService.validateAndBuildTransactionInformation(
                 principal.getClaimAsString("preferred_username"), TransactionType.DEPOSIT, transactionRequestDto
             )
-        return ResponseEntity.ok(transactionService.processTransaction(transactionInformation))
+
+        transactionService.processTransaction(transactionInformation)
+        MDC.clear()
+        return ResponseEntity.ok().build()
     }
 
     @Observed
     @PostMapping("/transaction/master/transfer")
     @PreAuthorize("hasRole('transfer')")
     fun transfer(@RequestBody transactionRequestDto: TransactionRequestDto, @AuthenticationPrincipal principal: Jwt): ResponseEntity<Unit> {
-
+        val requestId = UUID.randomUUID().toString()
+        MDC.put("requestId", requestId)
+        logger.info("RequestID - $requestId | Received request to transfer funds for user ${principal.getClaimAsString("preferred_username")}")
         val transactionInformation: TransactionInformation =
             validationService.validateAndBuildTransactionInformation(
                 principal.getClaimAsString("preferred_username"), TransactionType.TRANSFER, transactionRequestDto
             )
-        return ResponseEntity.ok(transactionService.processTransaction(transactionInformation))
+        transactionService.processTransaction(transactionInformation)
+        MDC.clear()
+        return ResponseEntity.ok().build()
     }
 
     @Observed
