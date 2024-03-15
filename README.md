@@ -59,6 +59,8 @@ To get started with the Transaction Master Application, follow these steps:
 ## Usage
 Once the application is up and running, you can perform the following actions:   
 
+There is a **postman collection** included in this project for ease of use under the local-environment directory.
+
 - **Login**: Use your credentials to log in to the application.
 - **Deposit Funds**:Deposit funds into your account by providing the necessary details.
 - **Transfer Funds**: Transfer funds from your account to another account.
