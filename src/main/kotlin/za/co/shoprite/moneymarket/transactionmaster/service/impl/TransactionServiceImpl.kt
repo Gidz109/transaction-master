@@ -1,7 +1,10 @@
 package za.co.shoprite.moneymarket.transactionmaster.service.impl
 
+import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import za.co.shoprite.moneymarket.transactionmaster.controller.TransactionController
 import za.co.shoprite.moneymarket.transactionmaster.model.TransactionInformation
 import za.co.shoprite.moneymarket.transactionmaster.model.TransactionReportInformation
 import za.co.shoprite.moneymarket.transactionmaster.model.TransactionSummary
@@ -38,7 +41,11 @@ class TransactionServiceImpl: TransactionService {
     @Autowired
     lateinit var  authenticationRepository: AuthenticationRepository
 
+    private val logger = LoggerFactory.getLogger(TransactionServiceImpl::class.java)
+
     override fun processTransaction(transactionInformation: TransactionInformation)    {
+
+        logger.info("RequestID - ${MDC.get("requestId")} | processing transaction")
 
         val transactionEntity = TransactionEntity()
         val transactionCurrency = currencyRepository.findByCode(transactionInformation.currencyCode)
@@ -60,6 +67,8 @@ class TransactionServiceImpl: TransactionService {
             transactionEntity.debitAccountId = debitAccount.id
             debitAccount(debitAccount, exchangedAmount)
         }
+
+        logger.info("RequestID - ${MDC.get("requestId")} | transaction processed successfully")
 
         transactionRepository.save(transactionEntity)
 

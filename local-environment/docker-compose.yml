@@ -21,15 +21,6 @@ services:
       - --import-realm
     volumes:
       - ./auth/config/realm.json:/opt/keycloak/data/import/realm.json
-  mock-auth-server:
-    container_name: "mock-auth-server"
-    image: ghcr.io/navikt/mock-oauth2-server:2.1.2
-    restart: always
-    environment:
-      - SERVER_PORT=${JWT_MOCK_SERVER_PORT}
-      - JSON_CONFIG={"interactiveLogin":false,"httpServer":"NettyWrapper","tokenCallbacks":[{"issuerId":"default","tokenExpiry":999999,"requestMappings":[{"requestParam":"scope","match":"paymentsdomain.all","claims":{"scp":["payments.deposit","payments.transfer","payments.report"],"strongauthlogin":"false"}}]}]}
-    ports:
-      - "8010:8010"
   postgres:
     container_name: "transaction-master-local-db"
     image: "postgres:16"

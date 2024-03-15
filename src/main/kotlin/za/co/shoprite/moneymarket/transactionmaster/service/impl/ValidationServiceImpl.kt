@@ -1,9 +1,11 @@
 package za.co.shoprite.moneymarket.transactionmaster.service.impl
 
 import org.apache.coyote.BadRequestException
+import org.slf4j.LoggerFactory
+import org.slf4j.MDC
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
+import za.co.shoprite.moneymarket.transactionmaster.controller.TransactionController
 import za.co.shoprite.moneymarket.transactionmaster.dto.TransactionRequestDto
 import za.co.shoprite.moneymarket.transactionmaster.model.TransactionInformation
 import za.co.shoprite.moneymarket.transactionmaster.model.entity.AccountEntity
@@ -21,14 +23,15 @@ class ValidationServiceImpl: ValidationService {
     @Autowired
     lateinit var accountRepository: AccountRepository
 
+    private val logger = LoggerFactory.getLogger(ValidationServiceImpl::class.java)
+
     override fun validateAndBuildTransactionInformation(username: String, transactionType: TransactionType, transactionRequest: TransactionRequestDto): TransactionInformation {
 
+        logger.info("RequestID - ${MDC.get("requestId")} | validating account for user $username")
+
         val authenticationEntity = authenticationRepository.findByUsername(username)
-
         val userId = authenticationEntity.userId
-
         val accountEntity: AccountEntity = accountRepository.findById(userId!!).get()
-
         val creditTransactionId: Long?
         val debitTransactionId: Long?
 
@@ -41,10 +44,13 @@ class ValidationServiceImpl: ValidationService {
                 debitTransactionId = accountEntity.id
                 creditTransactionId = accountRepository.findByAccountNumber(transactionRequest.creditAccountNumber!!).id
                 if(accountEntity.balance!! < transactionRequest.amount)    {
+                    logger.error("RequestID - ${MDC.get("requestId")} | account validation failed")
                     throw BadRequestException("User does not have sufficient funds for this transaction")
                 }
             }
         }
+
+        logger.info("RequestID - ${MDC.get("requestId")} | account validation successful")
 
         return TransactionInformation(transactionType, userId,
             debitTransactionId, creditTransactionId!!, transactionRequest.amount, transactionRequest.currency)
