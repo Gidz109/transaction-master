@@ -16,8 +16,30 @@ spring:
     locations: classpath:db/migration/all, classpath:db/migration/dev
     schemas: tmsch
 
+management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  tracing:
+    sampling:
+      probability: 1.0
+  observations:
+    annotations:
+      enabled: true
+
 logging:
   level:
+    org:
+      springframework:
+        cloud:
+          sleuth: trace
     root: info
 
 application:
