@@ -1,0 +1,153 @@
+{
+	"info": {
+		"_postman_id": "cf41b85d-0251-4e6d-9d78-22e623bfe695",
+		"name": "transaction-master",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "839982"
+	},
+	"item": [
+		{
+			"name": "Authenticate",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"johndoe\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/transaction/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"transaction",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Deposit",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJDaUd5SXdIU3ktVGhjQWhsaGd3RWo1RmVwSWV4ZTFOX2ZwYmhmVERFNVRrIn0.eyJleHAiOjE3MTAzNjcyMDAsImlhdCI6MTcxMDM2NjkwMCwianRpIjoiYjUzN2QxZGUtNzVkYy00OGZlLTkxZmUtMjk3M2QwOTgyMGVhIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9wYXltZW50cy1yZWFsbSIsInN1YiI6IjY1NjZjNjBiLWU0NTctNDcwNC04MGNhLWYwZmRkMWUwYzFmNSIsInR5cCI6IkJlYXJlciIsImF6cCI6InRyYW5zYWN0aW9uLW1hc3RlciIsInNlc3Npb25fc3RhdGUiOiI5Y2YxMWZlOC1hZDk5LTRiZTUtYTIxZS1hMGJjNDM1YzU3OWUiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MSJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsicmVwb3J0Il19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiI5Y2YxMWZlOC1hZDk5LTRiZTUtYTIxZS1hMGJjNDM1YzU3OWUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkphbmUgRG9lIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiamFuZWRvZSIsImdpdmVuX25hbWUiOiJKYW5lIiwiZmFtaWx5X25hbWUiOiJEb2UiLCJlbWFpbCI6Imp0QGdtYWlsLmNvbSJ9.Mj9WFGX0Oy3j_RSfbVMZzaN6uE98XzM1w4CrqbkKOCowaAVm_amwkwA2XCvbrzr2AMr19DBRMOh35FJHwhjYjKeDvK211Xk7tgBa7JDan2C63-xSVfv_s4_De-OOcNrHtW6Gt5Sf4UJSURb_X4EVuOgTAwPdafPPqc4LAnVVfsMpCIukxToVm3M_Eey_RqI0CAC4PyCMnl65fWv5nMBRbOBriPR3-iA0vLWZfkpqD9CbS2h1U5tEq_oPvGwsXamZHxIHkDpRBPbcgBulwvJybLqCyXA6hTyOmrdaxXiCciMYDCmnJfYmqb2bCN0VbF1jEPUHk1gqK8QXR4xwV2_uVA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 250,\r\n    \"currency\": \"ZAR\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/transaction/master/deposit",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"transaction",
+						"master",
+						"deposit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transfer",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJWdWNpUlplQ29fMTExWkE4QUJLMnZWbVRoeDlCbHZLSU5pNmdqVkZzS1p3In0.eyJleHAiOjE3MTAzNzA2MDYsImlhdCI6MTcxMDM3MDMwNiwianRpIjoiMWIzODYyZjgtZjhiOS00Njk4LThiOTktOTBmMTA3ZGMzZjkzIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9wYXltZW50cy1yZWFsbSIsInN1YiI6ImFkNjU1OWFhLTM2ZmEtNDk0NC05YjUyLTU2ODA3ZDUxYjM3ZSIsInR5cCI6IkJlYXJlciIsImF6cCI6InRyYW5zYWN0aW9uLW1hc3RlciIsInNlc3Npb25fc3RhdGUiOiJhMzQ3MjMzMy1lYWVjLTRlYzUtYTlmMy1hMWY2MzUzOGQ3NTAiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MSJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsidHJhbnNmZXIiLCJkZXBvc2l0Il19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJhMzQ3MjMzMy1lYWVjLTRlYzUtYTlmMy1hMWY2MzUzOGQ3NTAiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkpvaG4gRG9lIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obmRvZSIsImdpdmVuX25hbWUiOiJKb2huIiwiZmFtaWx5X25hbWUiOiJEb2UiLCJlbWFpbCI6ImpkQGdtYWlsLmNvbSJ9.UMHOS865d4mC7WZyIpT0Ez7HRS_XvwNveJcZqVURrs1xHT6pcJhzeHQsdHf5Caf63OnPMFNAaXrBuNPjp4F13fcz-yqFZuf3yq-gBI_ll7pbsCSBQq5TW9cHg2UM9LzZxkRwFUITUYxw65HNz9synwnXZHz2h-ScvBSKxISLgMoNs0UA3INpqjEj_X5wjdqV229XW0Rw2-g0rcPxFwKnFPLC9DtlM4ZPfXCTqFSaHA9Rwr49s_uh87_31lcR0AcfxNCFOH1PBa50fP-WS39d7pxkX-5JbHL9se6K6N_w5hFYw3piK3UBOg-X48TRICz9-9F23uBkbwULpmMWDSpf5w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 100,\r\n    \"currency\": \"ZAR\",\r\n    \"creditAccountNumber\": \"04fafa83-7882-48c1-906d-61fd33a3bdfe\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/transaction/master/transfer",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"transaction",
+						"master",
+						"transfer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Report",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJWdWNpUlplQ29fMTExWkE4QUJLMnZWbVRoeDlCbHZLSU5pNmdqVkZzS1p3In0.eyJleHAiOjE3MTAzNzE0MDIsImlhdCI6MTcxMDM3MTEwMiwianRpIjoiYWFjYjAzOWItMzJhMy00YmM0LWE0YmMtMGQwYmNiNmRkNGU5IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9wYXltZW50cy1yZWFsbSIsInN1YiI6ImFkNjU1OWFhLTM2ZmEtNDk0NC05YjUyLTU2ODA3ZDUxYjM3ZSIsInR5cCI6IkJlYXJlciIsImF6cCI6InRyYW5zYWN0aW9uLW1hc3RlciIsInNlc3Npb25fc3RhdGUiOiJlOTZiMTY0NC03ZTk1LTRlZDctOTlhYS1hMWZhNWMxNWRhMDQiLCJhY3IiOiIxIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MSJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsidHJhbnNmZXIiLCJkZXBvc2l0Il19LCJzY29wZSI6InByb2ZpbGUgZW1haWwiLCJzaWQiOiJlOTZiMTY0NC03ZTk1LTRlZDctOTlhYS1hMWZhNWMxNWRhMDQiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwibmFtZSI6IkpvaG4gRG9lIiwicHJlZmVycmVkX3VzZXJuYW1lIjoiam9obmRvZSIsImdpdmVuX25hbWUiOiJKb2huIiwiZmFtaWx5X25hbWUiOiJEb2UiLCJlbWFpbCI6ImpkQGdtYWlsLmNvbSJ9.aoaTJfhsM0NsAem8QpBUJj9SQEBoPwpjkpJjbQKDPPxNrjHHWtbBD-tKeeGGJyjEN4x9B1AjEKKqAXfWda0bi3VD7oO6Fktv5n9qcXx8POCfx220LunZl_R9OAd4eyeqHD3sQkI_hX_1t8dAfbRsYvWRQBYku_woxXu2DNF6K7yvVtYVhAC4cRLa_QHcS54Gzvw9D9qh0Vl068Ndc1MIDjlR_5uBTh_gmkto31-pWBf38vtkdpr61yPf_eTgnkkQAnke09b-AGHasGJk9Z79E2svqt8uNYCMI_SzvubJiHxwLl-IBJbFxn3WbvLrRSnrsxVReABvKOPsD6vj7bKTHg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/transaction/master/report",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"transaction",
+						"master",
+						"report"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
