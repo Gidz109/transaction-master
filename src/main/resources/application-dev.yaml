@@ -1,12 +1,49 @@
 spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: "http://localhost:8080/realms/payments-realm/protocol/openid-connect/certs"
+          issuer-uri: "http://localhost:8080/realms/payments-realm"
   datasource:
-    url: jdbc:h2:mem:transactionmaster
-    username: sa
-    password: password
-    driverClassName: org.h2.Driver
+    url: jdbc:postgresql://localhost:5432/transactionmaster?currentSchema=tmsch
+    username: postgres
+    password: P@ssw0rd1
   flyway:
     enabled: true
-    user: sa
-    password: password
+    user: postgres
+    password: P@ssw0rd1
     locations: classpath:db/migration/all, classpath:db/migration/dev
-    schemas: mmtm
+    schemas: tmsch
+
+management:
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
+  endpoints:
+    web:
+      exposure:
+        include: prometheus
+  tracing:
+    sampling:
+      probability: 1.0
+  observations:
+    annotations:
+      enabled: true
+
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          sleuth: trace
+    root: info
+
+application:
+  properties:
+    keycloak:
+      token:
+        url: "http://localhost:8080/realms/payments-realm/protocol/openid-connect/token"

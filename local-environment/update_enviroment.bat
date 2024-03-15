@@ -1,0 +1,2 @@
+CALL destroy_enviroment.bat
+CALL first_run_environment.bat

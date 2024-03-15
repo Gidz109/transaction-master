@@ -1,11 +1,17 @@
 spring:
   application:
-    name: transaction-master
+    name: @project.name@
   jpa:
     properties:
       hibernate:
-        database-platform: org.hibernate.dialect.H2Dialect
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
+server:
+  port: 8081
+
+springdoc:
+  api-docs:
+    path: "/api-docs"
