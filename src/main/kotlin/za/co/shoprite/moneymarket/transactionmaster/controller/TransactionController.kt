@@ -1,5 +1,6 @@
 package za.co.shoprite.moneymarket.transactionmaster.controller
 
+import io.micrometer.observation.annotation.Observed
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
@@ -26,10 +27,10 @@ class TransactionController {
     @Autowired
     lateinit var reportService: ReportService
 
+    @Observed
     @PostMapping("/transaction/master/deposit")
     @PreAuthorize("hasRole('deposit')")
     fun deposit(@RequestBody transactionRequestDto: TransactionRequestDto, @AuthenticationPrincipal principal: Jwt): ResponseEntity<Unit> {
-
 
 
         val transactionInformation: TransactionInformation =
@@ -39,6 +40,7 @@ class TransactionController {
         return ResponseEntity.ok(transactionService.processTransaction(transactionInformation))
     }
 
+    @Observed
     @PostMapping("/transaction/master/transfer")
     @PreAuthorize("hasRole('transfer')")
     fun transfer(@RequestBody transactionRequestDto: TransactionRequestDto, @AuthenticationPrincipal principal: Jwt): ResponseEntity<Unit> {
@@ -50,6 +52,7 @@ class TransactionController {
         return ResponseEntity.ok(transactionService.processTransaction(transactionInformation))
     }
 
+    @Observed
     /*This request should actually drop a message on a queue for an MDB to pick up and process on a seperate thread or by using spring batch.*/
     @GetMapping("/transaction/master/report")
     @PreAuthorize("hasRole('report')")

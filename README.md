@@ -44,7 +44,7 @@ To get started with the Transaction Master Application, follow these steps:
    cd transaction-master
    mvn clean install
 
-3. **Configure Local Environment**: Set up the required environment for database connection, Keycloak integration, etc.
+3. **Configure Local Environment**: Set up the required environment for database connection, Keycloak integration, Zipkin Observability, etc.
 
     ```bash
    cd local-environment
@@ -91,6 +91,15 @@ You would also need to add a flyway migration script under ./src/main/resources/
    insert into transactionmaster.tmsch."user"(name, surname) values ('John', 'Doe');
    insert into transactionmaster.tmsch.authentication(username, retry_count, locked, user_id) values ('johndoe', 0, false, 1);
    ```
+
+## Observability
+
+The application endpoints are observed by micrometer and recorded in Zipkin, to access all request details, 
+go to http://localhost:9411/zipkin/ and select "Run Query" at the top right of the Zipkin admin console.
+
+From there any request will be detailed as per below screenshot - 
+
+![img.png](img.png)
 
 ## License
 This project is licensed under the MIT License.
